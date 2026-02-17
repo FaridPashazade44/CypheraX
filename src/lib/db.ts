@@ -1,0 +1,12 @@
+import { Pool } from 'pg';
+
+// Create a PostgreSQL connection pool
+const pool = new Pool({
+    user: 'your_username',  // replace with your database username
+    host: 'localhost',      // replace with your database host
+    database: 'your_database', // replace with your database name
+    password: 'your_password', // replace with your database password
+    port: 5432,              // default PostgreSQL port
+});
+
+export default pool;
