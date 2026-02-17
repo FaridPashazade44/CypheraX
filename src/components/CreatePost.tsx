@@ -16,7 +16,7 @@ export default function CreatePost() {
       const response = await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, userId: 'temp-user-id' }),
+        body: JSON.stringify({ content }),
       });
 
       if (response.ok) {

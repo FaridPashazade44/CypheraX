@@ -20,7 +20,11 @@ export async function authenticate(req: NextRequest): Promise<NextResponse | nul
 }
 
 /**
- * Rate limiting middleware (basic implementation)
+ * Rate limiting middleware (basic in-memory implementation)
+ * NOTE: This implementation uses in-memory storage and will not work correctly
+ * in production with multiple server instances or serverless deployments.
+ * For production, consider using a distributed store like Redis or a service
+ * like Upstash Rate Limit.
  */
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
 

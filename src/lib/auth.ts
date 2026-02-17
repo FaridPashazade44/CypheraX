@@ -2,7 +2,15 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_change_in_production';
+// Get JWT secret with runtime validation
+function getJWTSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is required. Please set it in your .env file.');
+  }
+  return secret;
+}
+
 const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '7d';
 
 export interface JWTPayload {
@@ -17,7 +25,7 @@ export interface JWTPayload {
 export function generateToken(payload: JWTPayload): string {
   return jwt.sign(
     payload,
-    JWT_SECRET,
+    getJWTSecret(),
     { expiresIn: JWT_EXPIRATION } as jwt.SignOptions
   );
 }
@@ -27,7 +35,7 @@ export function generateToken(payload: JWTPayload): string {
  */
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, getJWTSecret()) as JWTPayload;
   } catch (err) {
     console.error('Token verification failed:', err);
     return null;

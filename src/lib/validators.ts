@@ -43,17 +43,15 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Password is required'),
 });
 
-// Post creation validation schema
+// Post creation validation schema (userId comes from auth token)
 export const createPostSchema = z.object({
   content: postContentSchema,
-  userId: z.string().uuid('Invalid user ID'),
 });
 
 // Comment creation validation schema
 export const createCommentSchema = z.object({
   content: commentSchema,
   postId: z.string().uuid('Invalid post ID'),
-  userId: z.string().uuid('Invalid user ID'),
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;
