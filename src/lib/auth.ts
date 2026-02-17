@@ -1,57 +1,63 @@
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
+import bcrypt from 'bcryptjs';
+import { cookies } from 'next/headers';
 
-const JWT_SECRET = 'your_jwt_secret_here'; // Replace with your actual JWT secret
-const JWT_EXPIRATION = '1h'; // Token expiration time
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_change_in_production';
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '7d';
+
+export interface JWTPayload {
+  userId: string;
+  email: string;
+  username: string;
+}
 
 /**
  * Generate JWT token
- * @param {Object} payload - Data to encode in the token
- * @returns {String} - JWT token
  */
-export function generateToken(payload) {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+export function generateToken(payload: JWTPayload): string {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
 }
 
 /**
  * Verify JWT token
- * @param {String} token - JWT token
- * @returns {Object} - Decoded token payload or null if verification fails
  */
-export function verifyToken(token) {
-    try {
-        return jwt.verify(token, JWT_SECRET);
-    } catch (err) {
-        console.error('Token verification failed:', err);
-        return null;
-    }
+export function verifyToken(token: string): JWTPayload | null {
+  try {
+    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+  } catch (err) {
+    console.error('Token verification failed:', err);
+    return null;
+  }
 }
 
 /**
- * Set cookie with JWT token
- * @param {String} token - JWT token
- * @param {Object} res - Response object
+ * Hash password using bcrypt
  */
-export function setTokenCookie(token, res) {
-    const serializedCookie = cookie.serialize('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 // 1 hour
-    });
-    res.setHeader('Set-Cookie', serializedCookie);
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
 }
 
 /**
- * Clear the token cookie
- * @param {Object} res - Response object
+ * Compare password with hash
  */
-export function clearTokenCookie(res) {
-    const serializedCookie = cookie.serialize('token', '', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: -1
-    });
-    res.setHeader('Set-Cookie', serializedCookie);
+export async function comparePassword(password: string, hash: string): Promise<boolean> {
+  return bcrypt.compare(password, hash);
+}
+
+/**
+ * Get token from cookies
+ */
+export async function getTokenFromCookies(): Promise<string | null> {
+  const cookieStore = await cookies();
+  return cookieStore.get('token')?.value || null;
+}
+
+/**
+ * Get current user from request
+ */
+export async function getCurrentUser(): Promise<JWTPayload | null> {
+  const token = await getTokenFromCookies();
+  if (!token) return null;
+  return verifyToken(token);
 }

@@ -1,16 +1,20 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   images: {
-    domains: ['example.com', 'another-example.com'], // Add your allowed image domains here
-  },
-  async rewrites() {
-    return [
+    remotePatterns: [
       {
-        source: '/api/:path*',
-        destination: 'https://api.yourservice.com/:path*', // Proxy to Backend
+        protocol: 'https',
+        hostname: '**',
       },
-    ];
+    ],
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
