@@ -1,30 +1,74 @@
-# CypheraX - Social Networking Platform for Cybersecurity Professionals
+# CypheraX
 
-A production-ready social networking web application designed for IT and cybersecurity professionals. Built with modern technologies and security best practices.
+## Description
+CypheraX is a cutting-edge cybersecurity platform designed to provide effective protection against various cyber threats. It aims to enhance the security posture of organizations by leveraging advanced analytical techniques and a user-friendly interface.
 
 ## Features
-
-- User Authentication & Authorization
-- Feed with Posts and Comments (nested replies)
-- Forum Categories and Threads
-- Friends System with Online Presence
-- Private Messaging (friends-only)
-- Real-time Notifications
-- User Profiles and Settings
-- Secure and Scalable Architecture
+- Real-time threat detection and monitoring
+- User-friendly dashboard with visual analytics
+- Integration with existing security tools
+- Detailed reporting and alerting mechanisms
+- Customizable security policies
 
 ## Tech Stack
+- **Backend:** Node.js, Express
+- **Frontend:** React.js
+- **Database:** MongoDB
+- **Others:** Docker, Kubernetes for container orchestration, JWT for authentication
 
-- **Frontend**: Next.js 14+ (App Router), TypeScript, Tailwind CSS
-- **Backend**: Next.js API Routes
-- **Database**: PostgreSQL
-- **Realtime**: Socket.IO
-- **Authentication**: JWT + Secure Sessions
+## Installation Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/FaridPashazade44/CypheraX.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd CypheraX
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Set up the environment:
+   - Create a `.env` file based on `.env.example` and fill in the required variables.
+5. Start the application:
+   ```bash
+   npm start
+   ```
 
-## Getting Started
+## Project Structure
+```
+CypheraX/
+│
+├── client/                # Frontend code
+├── server/                # Backend code
+├── config/                # Configuration files
+├── README.md              # Project documentation
+└── .env                   # Environment variables
+```
 
-See [Setup Instructions](./docs/SETUP.md) for detailed setup steps.
+## Security Features
+- Data encryption in transit and at rest
+- Regular security audits and vulnerability assessments
+- Access control and identity management features
+- Compliance with industry standards (GDPR, HIPAA, etc.)
+
+## API Documentation
+### GET /api/v1/threats
+- **Description:** Retrieves a list of current threats.
+- **Response:**
+  - 200 OK: Returns an array of threat objects.
+  
+### POST /api/v1/alerts
+- **Description:** Submits a new security alert.
+- **Request Body:**
+  - `{"description": "string", "severity": "string"}`
+- **Response:**
+  - 201 Created: Returns the created alert object.
 
 ## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-MIT
+## Contact Information
+For any questions or contributions, please reach out to:
+- **Email:** farid@example.com
