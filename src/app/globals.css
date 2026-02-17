@@ -2,20 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dark Theme Styles */
-:root {
-  --bg-color: white;
-  --text-color: black;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: black;
-    --text-color: white;
+@layer base {
+  body {
+    @apply bg-cyber-darker text-white;
+  }
+  
+  * {
+    @apply border-cyber-blue/20;
   }
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+@layer components {
+  /* Cyber glow effect */
+  .cyber-glow {
+    @apply shadow-cyber;
+  }
+  
+  .cyber-glow:hover {
+    @apply shadow-cyber-lg;
+  }
+  
+  /* Cyber button */
+  .btn-cyber {
+    @apply px-6 py-3 bg-cyber-blue text-cyber-darker font-bold rounded-lg 
+           hover:bg-cyber-accent transition-all duration-300 shadow-cyber
+           hover:shadow-cyber-lg;
+  }
+  
+  /* Cyber card */
+  .card-cyber {
+    @apply bg-cyber-dark rounded-lg p-6 border border-cyber-blue/30
+           shadow-cyber hover:shadow-cyber-lg transition-all duration-300;
+  }
+  
+  /* Cyber input */
+  .input-cyber {
+    @apply w-full px-4 py-3 bg-cyber-dark border border-cyber-blue/50 
+           rounded-lg focus:outline-none focus:border-cyber-blue
+           focus:shadow-cyber transition-all duration-300 text-white
+           placeholder:text-gray-500;
+  }
+  
+  /* Cyber link */
+  .link-cyber {
+    @apply text-cyber-blue hover:text-cyber-accent transition-colors duration-300;
+  }
+  
+  /* Scrollbar styling */
+  .cyber-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .cyber-scrollbar::-webkit-scrollbar-track {
+    @apply bg-cyber-darker;
+  }
+  
+  .cyber-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-cyber-blue rounded-full;
+  }
+  
+  .cyber-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-cyber-accent;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-cyber-blue to-cyber-accent bg-clip-text text-transparent;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
