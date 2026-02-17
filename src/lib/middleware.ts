@@ -26,7 +26,7 @@ const requestCounts = new Map<string, { count: number; resetTime: number }>();
 
 export function rateLimit(maxRequests: number, windowMs: number) {
   return (req: NextRequest): NextResponse | null => {
-    const identifier = req.ip || 'unknown';
+    const identifier = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
     const now = Date.now();
     
     const record = requestCounts.get(identifier);
